@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Private Messages</title>
 
 <style>
@@ -8,38 +9,60 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     text-align: center;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    overflow: hidden;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    overflow-x: hidden;
 }
 
 .app {
     background: white;
-    padding: 40px;
-    border-radius: 20px;
-    width: 320px;
-    margin: 100px auto;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 30px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 350px;
+    margin: 80px auto;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.shake {
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-6px); }
+    100% { transform: translateX(0); }
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 10px;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
     border: 1px solid #ccc;
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 20px;
+    border-radius: 25px;
     background: #ff4d79;
     color: white;
     cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 button:hover {
     background: #ff2f65;
+}
+
+#result {
+    margin-top: 15px;
+    min-height: 40px;
+    font-weight: bold;
 }
 
 .heart {
@@ -58,7 +81,7 @@ button:hover {
 
 <body>
 
-<div class="app">
+<div class="app" id="appBox">
 <h1>🔐 Private Access</h1>
 
 <input type="text" id="nameInput" placeholder="Enter your name">
@@ -68,20 +91,38 @@ button:hover {
 <div id="result"></div>
 </div>
 
+<audio id="unlockSound">
+<source src="https://www.soundjay.com/buttons/sounds/button-3.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 let attempts = 0;
+let adminPassword = "Admingod2015";
+let forgiveClicked = false;
+let loginAttempts = [];
 
 function unlock() {
     let name = document.getElementById("nameInput").value.trim().toLowerCase();
     let password = document.getElementById("passwordInput").value;
     let result = document.getElementById("result");
+    let box = document.getElementById("appBox");
 
-    // 💖 Lyla
+    loginAttempts.push(name);
+
+    // ADMIN MODE
+    if (password === adminPassword) {
+        result.innerHTML = `
+        👑 ADMIN MODE<br><br>
+        Forgive clicked: ${forgiveClicked}<br>
+        Login attempts: ${loginAttempts.join(", ")}
+        `;
+        startHearts();
+        return;
+    }
+
     if (name === "lyla" && password === "lyla123") {
         showMessage("Lyla 💕 I really like you, you're too beautiful to ignore.");
     }
-
-    // 💔 Lyla Apology
     else if (name === "lyla" && password === "lyla321") {
         result.innerHTML = `
         💔 Lyla...<br><br>
@@ -91,43 +132,49 @@ function unlock() {
         <button onclick="forgive()">Will you forgive me?</button>
         `;
         startHearts();
+        playSound();
     }
-
-    // 🌸 Emmanuella
     else if (name === "emmanuella" && password === "emmanuella123") {
         showMessage("Emmanuella 🌸 You always make my day.");
     }
-
-    // 🌹 Scarlet
     else if (name === "scarlet" && password === "scarlet123") {
         showMessage("Scarlet 🌹 You are someone to trust.");
     }
-
-    // 🤝 Brodie
     else if (name === "brodie" && password === "brodie123") {
         showMessage("Brodie 🤝 Someone to trust and a really good friend.");
     }
-
     else {
         attempts++;
-        result.innerHTML = "❌ Access Denied. Attempts left: " + (3 - attempts);
+        box.classList.add("shake");
+        setTimeout(() => box.classList.remove("shake"), 400);
+        result.innerHTML = "❌ Wrong password";
     }
 }
 
 function showMessage(message) {
-    document.getElementById("result").innerHTML = message;
+    typeEffect(message);
     startHearts();
+    playSound();
+}
+
+function typeEffect(text) {
+    let result = document.getElementById("result");
+    result.innerHTML = "";
+    let i = 0;
+    let interval = setInterval(() => {
+        result.innerHTML += text[i];
+        i++;
+        if (i >= text.length) clearInterval(interval);
+    }, 40);
 }
 
 function forgive() {
+    forgiveClicked = true;
     document.getElementById("result").innerHTML = "💙 Forgiveness recorded.";
+}
 
-    // 🔔 This sends you a notification (Formspark)
-    fetch("https://formspree.io/f/mykddlbk", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: "Lyla clicked forgive" })
-    });
+function playSound() {
+    document.getElementById("unlockSound").play();
 }
 
 function startHearts() {
@@ -141,14 +188,9 @@ function startHearts() {
         setTimeout(() => {
             heart.remove();
         }, 3000);
-
     }, 300);
 }
-            
-        
-   
 </script>
 
 </body>
 </html>
-
