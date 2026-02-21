@@ -77,6 +77,111 @@ button:hover {
     to { transform: translateY(-100vh); opacity: 0; }
 }
 </style>
+// Load saved data
+let adminPassword = "Admingod2015";
+
+let forgiveClicked = localStorage.getItem("forgiveClicked") === "true";
+let wrongAttempts = Number(localStorage.getItem("wrongAttempts")) || 0;
+let loginAttempts = JSON.parse(localStorage.getItem("loginAttempts")) || [];
+
+let messages = JSON.parse(localStorage.getItem("messages")) || {
+    lyla: "Lyla 💕 I really like you, you're too beautiful to ignore.",
+    emmanuella: "Emmanuella 🌸 You always make my day.",
+    scarlet: "Scarlet 🌹 You are someone to trust.",
+    brodie: "Brodie 🤝 Someone to trust and a really good friend."
+};
+
+function unlock() {
+    let name = document.getElementById("nameInput").value.trim().toLowerCase();
+    let password = document.getElementById("passwordInput").value;
+    let result = document.getElementById("result");
+    let box = document.getElementById("appBox");
+
+    loginAttempts.push(name);
+    localStorage.setItem("loginAttempts", JSON.stringify(loginAttempts));
+
+    // ADMIN MODE
+    if (password === adminPassword) {
+        result.innerHTML = `
+        👑 ADMIN PANEL<br><br>
+        Forgive clicked: ${forgiveClicked}<br>
+        Wrong attempts: ${wrongAttempts}<br><br>
+
+        ✏️ Edit Lyla Message:<br>
+        <textarea id="editLyla">${messages.lyla}</textarea><br>
+
+        ✏️ Edit Emmanuella Message:<br>
+        <textarea id="editEm">${messages.emmanuella}</textarea><br>
+
+        ✏️ Edit Scarlet Message:<br>
+        <textarea id="editScarlet">${messages.scarlet}</textarea><br>
+
+        ✏️ Edit Brodie Message:<br>
+        <textarea id="editBrodie">${messages.brodie}</textarea><br><br>
+
+        <button onclick="saveMessages()">Save Changes</button>
+        <button onclick="resetAll()">Reset Everything</button>
+        `;
+        return;
+    }
+
+    if (name === "lyla" && password === "lyla123") {
+        showMessage(messages.lyla);
+    }
+    else if (name === "lyla" && password === "lyla321") {
+        result.innerHTML = `
+        💔 Lyla...<br><br>
+        I am so sorry for everything I have ever done.<br>
+        Especially if I made you feel uncomfortable.<br>
+        I truly am sorry.<br><br>
+        <button onclick="forgive()">Will you forgive me?</button>
+        `;
+    }
+    else if (name === "emmanuella" && password === "emmanuella123") {
+        showMessage(messages.emmanuella);
+    }
+    else if (name === "scarlet" && password === "scarlet123") {
+        showMessage(messages.scarlet);
+    }
+    else if (name === "brodie" && password === "brodie123") {
+        showMessage(messages.brodie);
+    }
+    else {
+        wrongAttempts++;
+        localStorage.setItem("wrongAttempts", wrongAttempts);
+
+        box.classList.add("shake");
+        setTimeout(() => box.classList.remove("shake"), 400);
+        result.innerHTML = "❌ Wrong password";
+    }
+}
+
+function showMessage(message) {
+    document.getElementById("result").innerHTML = message;
+}
+
+function forgive() {
+    forgiveClicked = true;
+    localStorage.setItem("forgiveClicked", "true");
+    document.getElementById("result").innerHTML = "💙 Forgiveness recorded.";
+}
+
+function saveMessages() {
+    messages.lyla = document.getElementById("editLyla").value;
+    messages.emmanuella = document.getElementById("editEm").value;
+    messages.scarlet = document.getElementById("editScarlet").value;
+    messages.brodie = document.getElementById("editBrodie").value;
+
+    localStorage.setItem("messages", JSON.stringify(messages));
+    alert("Saved successfully 👑");
+}
+
+function resetAll() {
+    localStorage.clear();
+    alert("Everything reset.");
+    location.reload();
+}
+
 </head>
 
 <body>
@@ -95,102 +200,9 @@ button:hover {
 <source src="https://www.soundjay.com/buttons/sounds/button-3.mp3" type="audio/mpeg">
 </audio>
 
-<script>
-let attempts = 0;
-let adminPassword = "Admingod2015";
-let forgiveClicked = false;
-let loginAttempts = [];
-
-function unlock() {
-    let name = document.getElementById("nameInput").value.trim().toLowerCase();
-    let password = document.getElementById("passwordInput").value;
-    let result = document.getElementById("result");
-    let box = document.getElementById("appBox");
-
-    loginAttempts.push(name);
-
-    // ADMIN MODE
-    if (password === adminPassword) {
-        result.innerHTML = `
-        👑 ADMIN MODE<br><br>
-        Forgive clicked: ${forgiveClicked}<br>
-        Login attempts: ${loginAttempts.join(", ")}
-        `;
-        startHearts();
-        return;
-    }
-
-    if (name === "lyla" && password === "lyla123") {
-        showMessage("Lyla 💕 I really like you, you're too beautiful to ignore.");
-    }
-    else if (name === "lyla" && password === "lyla321") {
-        result.innerHTML = `
-        💔 Lyla...<br><br>
-        I am so sorry for everything I have ever done.<br>
-        Especially if I made you feel uncomfortable.<br>
-        I truly am sorry.<br><br>
-        <button onclick="forgive()">Will you forgive me?</button>
-        `;
-        startHearts();
-        playSound();
-    }
-    else if (name === "emmanuella" && password === "emmanuella123") {
-        showMessage("Emmanuella 🌸 You always make my day.");
-    }
-    else if (name === "scarlet" && password === "scarlet123") {
-        showMessage("Scarlet 🌹 You are someone to trust.");
-    }
-    else if (name === "brodie" && password === "brodie123") {
-        showMessage("Brodie 🤝 Someone to trust and a really good friend.");
-    }
-    else {
-        attempts++;
-        box.classList.add("shake");
-        setTimeout(() => box.classList.remove("shake"), 400);
-        result.innerHTML = "❌ Wrong password";
-    }
-}
-
-function showMessage(message) {
-    typeEffect(message);
-    startHearts();
-    playSound();
-}
-
-function typeEffect(text) {
-    let result = document.getElementById("result");
-    result.innerHTML = "";
-    let i = 0;
-    let interval = setInterval(() => {
-        result.innerHTML += text[i];
-        i++;
-        if (i >= text.length) clearInterval(interval);
-    }, 40);
-}
-
-function forgive() {
-    forgiveClicked = true;
-    document.getElementById("result").innerHTML = "💙 Forgiveness recorded.";
-}
-
-function playSound() {
-    document.getElementById("unlockSound").play();
-}
-
-function startHearts() {
-    setInterval(() => {
-        let heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-            heart.remove();
-        }, 3000);
-    }, 300);
-}
+<script> 
 </script>
 
 </body>
 </html>
+
