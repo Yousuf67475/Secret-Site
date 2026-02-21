@@ -136,7 +136,8 @@ let defaultAccounts = {
     }
 };
 
-let accounts = JSON.parse(localStorage.getItem("accounts")) || defaultAccounts;
+let accounts = defaultAccounts;
+localStorage.setItem("accounts", JSON.stringify(accounts));
 let loginLogs = JSON.parse(localStorage.getItem("logs")) || [];
 let lylaForgiven = JSON.parse(localStorage.getItem("lylaForgiven")) || false;
 
@@ -291,5 +292,6 @@ function toggleLock(user) {
 
 </body>
 </html>
+
 
 
