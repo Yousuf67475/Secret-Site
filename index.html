@@ -117,13 +117,15 @@ function login() {
         loginLogs.push(user + " logged in");
         saveData();
 
-        if (user === "lyla") {
-            document.getElementById("result").innerHTML =
-                accounts[user].message +
-                "<br><br><button onclick='forgive()'>Will you forgive me?</button>";
-        } else {
-            document.getElementById("result").innerHTML = accounts[user].message;
-        }
+        let message = accounts[user].message;
+
+if (message.toLowerCase().includes("sorry")) {
+    document.getElementById("result").innerHTML =
+        message +
+        "<br><br><button onclick='forgive()'>Will you forgive me?</button>";
+} else {
+    document.getElementById("result").innerHTML = message;
+}
 
     } else {
 
@@ -232,3 +234,4 @@ function toggleLock(user) {
 
 </body>
 </html>
+
