@@ -65,7 +65,7 @@ let accounts = {
         password: "lyla123",
         message: "i really like you youre too beautiful to ignore"
     },
-    lyla_apology: {
+    lylas: {
         password: "lyla321",
         message: "I am so sorry for everything I have ever done that made you feel uncomfortable. I am really sorry."
     },
@@ -91,15 +91,17 @@ let accounts = {
     },
     beaty: {
         password: "beaty123",
-        message: "Really funny and playful good to talk to."
+        message: "A really funny person to talk to."
     },
     tiffany: {
         password: "tiffany123",
-        message: "I don't really know but to be honest you are the most athletic girl I have ever seen"
+        message: "I don't really know what to say but to be honest you are the most athletic girl I have ever seen"
     }
 };
 
 function login() {
+
+  function login() {
 
     let user = document.getElementById("username").value.toLowerCase();
     let pass = document.getElementById("password").value;
@@ -115,23 +117,48 @@ function login() {
         return;
     }
 
-    let message = accounts[user].message;
+    // 💔 APOLOGY MODE
+    if (user === "lylas") {
 
-    if (message.toLowerCase().includes("sorry")) {
-        result.innerHTML =
-            message +
-            "<br><br><button onclick='forgive()'>Will you forgive me?</button>";
-    } else {
+        document.body.style.background = "#1a1a1a";
+        result.style.color = "#ffb6c1";
+        result.style.fontSize = "18px";
+        result.style.opacity = 0;
+
+        let message = `
+        <div style="margin-top:10px;">
+        I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+        I never meant to hurt you.<br>
+        You deserve to feel safe and respected.<br><br>
+        </div>
+        <button onclick="forgive()" 
+        style="background:#ffb6c1; color:black; padding:10px 20px; border:none; cursor:pointer;">
+        Will you forgive me? 🤍
+        </button>
+        `;
+
         result.innerHTML = message;
-    }
-}
 
-function forgive() {
-    document.getElementById("result").innerHTML =
-        "💖 Forgiveness recorded.";
+        // Fade in effect
+        let fade = 0;
+        let interval = setInterval(() => {
+            fade += 0.05;
+            result.style.opacity = fade;
+            if (fade >= 1) clearInterval(interval);
+        }, 50);
+
+        return;
+    }
+
+    // Normal accounts
+    document.body.style.background = "black";
+    result.style.color = "#00ffcc";
+    result.style.fontSize = "16px";
+    result.innerHTML = accounts[user].message;
 }
 
 </script>
 
 </body>
 </html>
+
