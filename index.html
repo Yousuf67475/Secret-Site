@@ -79,7 +79,64 @@ button:hover {
 
 let adminPassword = "Admingod2015";
 
-let accounts = JSON.parse(localStorage.getItem("accounts")) || {};
+let defaultAccounts = {
+    lyla: {
+        password: "lyla123",
+        message: "i really like you youre too beautiful to ignore",
+        locked: false,
+        attempts: 0
+    },
+    lyla_apology: {
+        password: "lyla321",
+        message: "I am so sorry for everything I have ever done that made you feel uncomfortable. I am really sorry.",
+        locked: false,
+        attempts: 0
+    },
+    emmanuella: {
+        password: "emmanuella123",
+        message: "you always make my day",
+        locked: false,
+        attempts: 0
+    },
+    scarlet: {
+        password: "scarlet123",
+        message: "You are someone to trust",
+        locked: false,
+        attempts: 0
+    },
+    brodie: {
+        password: "brodie123",
+        message: "someone to trust and a really good friend",
+        locked: false,
+        attempts: 0
+    },
+    ariana: {
+        password: "ariana123",
+        message: "Really funny and fun to play with.",
+        locked: false,
+        attempts: 0
+    },
+    bethany: {
+        password: "bethany123",
+        message: "A bit annoying but good to talk to.",
+        locked: false,
+        attempts: 0
+    },
+    beaty: {
+        password: "beaty123",
+        message: "Really funny and playful good to talk to.",
+        locked: false,
+        attempts: 0
+    },
+    tiffany: {
+        password: "tiffany123",
+        message: "I don't really know but to be honest you are the most athletic girl I have ever seen",
+        locked: false,
+        attempts: 0
+    }
+};
+
+let accounts = JSON.parse(localStorage.getItem("accounts")) || defaultAccounts;
 let loginLogs = JSON.parse(localStorage.getItem("logs")) || [];
 let lylaForgiven = JSON.parse(localStorage.getItem("lylaForgiven")) || false;
 
@@ -234,4 +291,5 @@ function toggleLock(user) {
 
 </body>
 </html>
+
 
