@@ -1,75 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>Private Access</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Messages</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    text-align: center;
+    height: 100vh;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 .app {
     background: white;
     padding: 30px;
-    border-radius: 25px;
-    width: 90%;
-    max-width: 350px;
-    margin: 80px auto;
+    border-radius: 20px;
+    text-align: center;
+    width: 340px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    transition: 0.3s;
+    position: relative;
+    z-index: 2;
 }
 
-.shake {
-    animation: shake 0.4s;
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-6px); }
-    50% { transform: translateX(6px); }
-    75% { transform: translateX(-6px); }
-    100% { transform: translateX(0); }
-}
-
-input {
+input, textarea {
     width: 100%;
-    padding: 12px;
+    padding: 8px;
     margin: 8px 0;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid #ccc;
 }
 
 button {
-    padding: 12px 20px;
+    padding: 8px 15px;
     border: none;
-    border-radius: 25px;
-    background: #ff4d79;
+    border-radius: 20px;
+    background: #ff4d88;
     color: white;
-    cursor: pointer;
     font-weight: bold;
-    margin-top: 10px;
+    cursor: pointer;
+    margin-top: 5px;
 }
 
 button:hover {
-    background: #ff2f65;
+    opacity: 0.8;
 }
 
 #result {
     margin-top: 15px;
-    min-height: 40px;
     font-weight: bold;
+}
+
+.profile {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 3px solid #ff4d88;
 }
 
 .heart {
     position: fixed;
     bottom: 0;
     font-size: 20px;
-    animation: float 3s linear forwards;
+    animation: float 4s linear forwards;
 }
 
 @keyframes float {
@@ -77,132 +76,132 @@ button:hover {
     to { transform: translateY(-100vh); opacity: 0; }
 }
 </style>
-// Load saved data
-let adminPassword = "Admingod2015";
+</head>
 
-let forgiveClicked = localStorage.getItem("forgiveClicked") === "true";
-let wrongAttempts = Number(localStorage.getItem("wrongAttempts")) || 0;
-let loginAttempts = JSON.parse(localStorage.getItem("loginAttempts")) || [];
+<body>
+
+<div class="app">
+<h2>🔐 Private Access</h2>
+
+<input type="text" id="nameInput" placeholder="Enter name">
+<input type="password" id="passwordInput" placeholder="Enter password">
+<button onclick="unlock()">Unlock 💌</button>
+
+<div id="result"></div>
+<div id="adminPanel"></div>
+</div>
+
+<script>
 
 let messages = JSON.parse(localStorage.getItem("messages")) || {
-    lyla: "Lyla 💕 I really like you, you're too beautiful to ignore.",
-    emmanuella: "Emmanuella 🌸 You always make my day.",
-    scarlet: "Scarlet 🌹 You are someone to trust.",
-    brodie: "Brodie 🤝 Someone to trust and a really good friend."
+    ariana: "Ariana 😂 Really funny and fun to play with.",
+    bethany: "Bethany 🙄 A bit annoying but good to talk to.",
+    beaty: "Beaty 😆 Really funny and playful, good to talk to.",
+    tiffany: "Tiffany 🏃‍♀️ I don’t really know, but to be honest you are the most athletic girl I have ever seen."
 };
 
+let images = {
+    ariana: "https://i.pravatar.cc/150?img=1",
+    bethany: "https://i.pravatar.cc/150?img=2",
+    beaty: "https://i.pravatar.cc/150?img=3",
+    tiffany: "https://i.pravatar.cc/150?img=4"
+};
+
+let forgiveClicked = localStorage.getItem("forgiveClicked") === "true";
+let adminPassword = "Admingod2015";
+
+// 🔊 Sounds
+let successSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+let deniedSound = new Audio("https://www.soundjay.com/buttons/sounds/button-10.mp3");
+let adminSound = new Audio("https://www.soundjay.com/buttons/sounds/button-4.mp3");
+let bgMusic = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+bgMusic.loop = true;
+
 function unlock() {
-    let name = document.getElementById("nameInput").value.trim().toLowerCase();
+    let name = document.getElementById("nameInput").value.toLowerCase();
     let password = document.getElementById("passwordInput").value;
     let result = document.getElementById("result");
-    let box = document.getElementById("appBox");
+    let adminPanel = document.getElementById("adminPanel");
 
-    loginAttempts.push(name);
-    localStorage.setItem("loginAttempts", JSON.stringify(loginAttempts));
+    adminPanel.innerHTML = "";
 
-    // ADMIN MODE
     if (password === adminPassword) {
-        result.innerHTML = `
-        👑 ADMIN PANEL<br><br>
-        Forgive clicked: ${forgiveClicked}<br>
-        Wrong attempts: ${wrongAttempts}<br><br>
+        adminSound.play();
+        bgMusic.play();
+        adminPanel.innerHTML = `
+        👑 ADMIN MODE<br><br>
+        Forgive clicked: ${forgiveClicked}<br><br>
 
-        ✏️ Edit Lyla Message:<br>
-        <textarea id="editLyla">${messages.lyla}</textarea><br>
+        ✏️ Edit Ariana:<br>
+        <textarea id="editAriana">${messages.ariana}</textarea>
 
-        ✏️ Edit Emmanuella Message:<br>
-        <textarea id="editEm">${messages.emmanuella}</textarea><br>
+        ✏️ Edit Bethany:<br>
+        <textarea id="editBethany">${messages.bethany}</textarea>
 
-        ✏️ Edit Scarlet Message:<br>
-        <textarea id="editScarlet">${messages.scarlet}</textarea><br>
+        ✏️ Edit Beaty:<br>
+        <textarea id="editBeaty">${messages.beaty}</textarea>
 
-        ✏️ Edit Brodie Message:<br>
-        <textarea id="editBrodie">${messages.brodie}</textarea><br><br>
+        ✏️ Edit Tiffany:<br>
+        <textarea id="editTiffany">${messages.tiffany}</textarea>
 
         <button onclick="saveMessages()">Save Changes</button>
-        <button onclick="resetAll()">Reset Everything</button>
         `;
+        result.innerHTML = "";
         return;
     }
 
-    if (name === "lyla" && password === "lyla123") {
-        showMessage(messages.lyla);
-    }
-    else if (name === "lyla" && password === "lyla321") {
-        result.innerHTML = `
-        💔 Lyla...<br><br>
-        I am so sorry for everything I have ever done.<br>
-        Especially if I made you feel uncomfortable.<br>
-        I truly am sorry.<br><br>
-        <button onclick="forgive()">Will you forgive me?</button>
-        `;
-    }
-    else if (name === "emmanuella" && password === "emmanuella123") {
-        showMessage(messages.emmanuella);
-    }
-    else if (name === "scarlet" && password === "scarlet123") {
-        showMessage(messages.scarlet);
-    }
-    else if (name === "brodie" && password === "brodie123") {
-        showMessage(messages.brodie);
-    }
-    else {
-        wrongAttempts++;
-        localStorage.setItem("wrongAttempts", wrongAttempts);
-
-        box.classList.add("shake");
-        setTimeout(() => box.classList.remove("shake"), 400);
-        result.innerHTML = "❌ Wrong password";
+    if (messages[name] && password === name + "123") {
+        successSound.play();
+        bgMusic.play();
+        showMessage(name);
+    } else {
+        deniedSound.play();
+        result.style.color = "red";
+        result.innerHTML = "❌ Access Denied";
     }
 }
 
-function showMessage(message) {
-    document.getElementById("result").innerHTML = message;
+function showMessage(name) {
+    document.getElementById("result").style.color = "black";
+    document.getElementById("result").innerHTML = `
+        <img src="${images[name]}" class="profile">
+        <div>${messages[name]}</div>
+        <br>
+        <button onclick="forgive()">Will you forgive me?</button>
+    `;
+    startHearts();
 }
 
 function forgive() {
     forgiveClicked = true;
     localStorage.setItem("forgiveClicked", "true");
-    document.getElementById("result").innerHTML = "💙 Forgiveness recorded.";
+    document.getElementById("result").innerHTML = "💖 Forgiveness recorded.";
 }
 
 function saveMessages() {
-    messages.lyla = document.getElementById("editLyla").value;
-    messages.emmanuella = document.getElementById("editEm").value;
-    messages.scarlet = document.getElementById("editScarlet").value;
-    messages.brodie = document.getElementById("editBrodie").value;
+    messages.ariana = document.getElementById("editAriana").value;
+    messages.bethany = document.getElementById("editBethany").value;
+    messages.beaty = document.getElementById("editBeaty").value;
+    messages.tiffany = document.getElementById("editTiffany").value;
 
     localStorage.setItem("messages", JSON.stringify(messages));
-    alert("Saved successfully 👑");
+    alert("Saved 👑");
 }
 
-function resetAll() {
-    localStorage.clear();
-    alert("Everything reset.");
-    location.reload();
+function startHearts() {
+    setInterval(() => {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 4000);
+    }, 500);
 }
 
-</head>
-
-<body>
-
-<div class="app" id="appBox">
-<h1>🔐 Private Access</h1>
-
-<input type="text" id="nameInput" placeholder="Enter your name">
-<input type="password" id="passwordInput" placeholder="Enter password">
-<button onclick="unlock()">Unlock 💌</button>
-
-<div id="result"></div>
-</div>
-
-<audio id="unlockSound">
-<source src="https://www.soundjay.com/buttons/sounds/button-3.mp3" type="audio/mpeg">
-</audio>
-
-<script> 
 </script>
+
 
 </body>
 </html>
-
