@@ -1,79 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Private Access</title>
+<title>Private Control System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
+    font-family: monospace;
+    color: #00ffcc;
 }
 
 .app {
-    background: white;
+    background: #111;
     padding: 30px;
-    border-radius: 20px;
-    text-align: center;
-    width: 340px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    position: relative;
-    z-index: 2;
+    border-radius: 15px;
+    width: 420px;
+    box-shadow: 0 0 20px #00ffcc;
 }
 
 input, textarea {
     width: 100%;
     padding: 8px;
-    margin: 8px 0;
-    border-radius: 10px;
-    border: 1px solid #ccc;
+    margin: 6px 0;
+    background: black;
+    border: 1px solid #00ffcc;
+    color: #00ffcc;
+    border-radius: 5px;
 }
 
 button {
-    padding: 8px 15px;
+    padding: 6px 12px;
     border: none;
-    border-radius: 20px;
-    background: #ff4d88;
-    color: white;
+    background: #00ffcc;
+    color: black;
     font-weight: bold;
+    border-radius: 5px;
     cursor: pointer;
     margin-top: 5px;
 }
 
 button:hover {
-    opacity: 0.8;
+    background: white;
 }
 
 #result {
+    margin-top: 10px;
+    min-height: 40px;
+    white-space: pre-wrap;
+}
+
+.admin-box {
+    border-top: 1px solid #00ffcc;
     margin-top: 15px;
-    font-weight: bold;
-}
-
-.profile {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border: 3px solid #ff4d88;
-}
-
-.heart {
-    position: fixed;
-    bottom: 0;
-    font-size: 20px;
-    animation: float 4s linear forwards;
-}
-
-@keyframes float {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(-100vh); opacity: 0; }
+    padding-top: 10px;
 }
 </style>
 </head>
@@ -81,126 +66,168 @@ button:hover {
 <body>
 
 <div class="app">
-<h2>🔐 Private Access</h2>
+<h3>PRIVATE SYSTEM</h3>
 
-<input type="text" id="nameInput" placeholder="Enter name">
-<input type="password" id="passwordInput" placeholder="Enter password">
-<button onclick="unlock()">Unlock 💌</button>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
 
 <div id="result"></div>
 <div id="adminPanel"></div>
 </div>
-
 <script>
 
-let messages = JSON.parse(localStorage.getItem("messages")) || {
-    ariana: "Ariana 😂 Really funny and fun to play with.",
-    bethany: "Bethany 🙄 A bit annoying but good to talk to.",
-    beaty: "Beaty 😆 Really funny and playful, good to talk to.",
-    tiffany: "Tiffany 🏃‍♀️ I don’t really know, but to be honest you are the most athletic girl I have ever seen."
-};
-
-let images = {
-    ariana: "https://i.pravatar.cc/150?img=1",
-    bethany: "https://i.pravatar.cc/150?img=2",
-    beaty: "https://i.pravatar.cc/150?img=3",
-    tiffany: "https://i.pravatar.cc/150?img=4"
-};
-
-let forgiveClicked = localStorage.getItem("forgiveClicked") === "true";
 let adminPassword = "Admingod2015";
 
-// 🔊 Sounds
-let successSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
-let deniedSound = new Audio("https://www.soundjay.com/buttons/sounds/button-10.mp3");
-let adminSound = new Audio("https://www.soundjay.com/buttons/sounds/button-4.mp3");
-let bgMusic = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
-bgMusic.loop = true;
+let accounts = JSON.parse(localStorage.getItem("accounts")) || {};
+let loginLogs = JSON.parse(localStorage.getItem("logs")) || [];
+let lylaForgiven = JSON.parse(localStorage.getItem("lylaForgiven")) || false;
 
-function unlock() {
-    let name = document.getElementById("nameInput").value.toLowerCase();
-    let password = document.getElementById("passwordInput").value;
-    let result = document.getElementById("result");
-    let adminPanel = document.getElementById("adminPanel");
+function saveData() {
+    localStorage.setItem("accounts", JSON.stringify(accounts));
+    localStorage.setItem("logs", JSON.stringify(loginLogs));
+    localStorage.setItem("lylaForgiven", JSON.stringify(lylaForgiven));
+}
 
-    adminPanel.innerHTML = "";
+function login() {
+    let user = document.getElementById("username").value.toLowerCase();
+    let pass = document.getElementById("password").value;
 
-    if (password === adminPassword) {
-        adminSound.play();
-        bgMusic.play();
-        adminPanel.innerHTML = `
-        👑 ADMIN MODE<br><br>
-        Forgive clicked: ${forgiveClicked}<br><br>
+    document.getElementById("adminPanel").innerHTML = "";
 
-        ✏️ Edit Ariana:<br>
-        <textarea id="editAriana">${messages.ariana}</textarea>
-
-        ✏️ Edit Bethany:<br>
-        <textarea id="editBethany">${messages.bethany}</textarea>
-
-        ✏️ Edit Beaty:<br>
-        <textarea id="editBeaty">${messages.beaty}</textarea>
-
-        ✏️ Edit Tiffany:<br>
-        <textarea id="editTiffany">${messages.tiffany}</textarea>
-
-        <button onclick="saveMessages()">Save Changes</button>
-        `;
-        result.innerHTML = "";
+    // Admin login
+    if (pass === adminPassword) {
+        showAdmin();
         return;
     }
 
-    if (messages[name] && password === name + "123") {
-        successSound.play();
-        bgMusic.play();
-        showMessage(name);
+    if (!accounts[user]) {
+        document.getElementById("result").innerHTML = "❌ User not found.";
+        return;
+    }
+
+    if (accounts[user].locked) {
+        document.getElementById("result").innerHTML = "❌ Account Locked.";
+        return;
+    }
+
+    if (accounts[user].password === pass) {
+
+        accounts[user].attempts = 0;
+        loginLogs.push(user + " logged in");
+        saveData();
+
+        if (user === "lyla") {
+            document.getElementById("result").innerHTML =
+                accounts[user].message +
+                "<br><br><button onclick='forgive()'>Will you forgive me?</button>";
+        } else {
+            document.getElementById("result").innerHTML = accounts[user].message;
+        }
+
     } else {
-        deniedSound.play();
-        result.style.color = "red";
-        result.innerHTML = "❌ Access Denied";
+
+        accounts[user].attempts = (accounts[user].attempts || 0) + 1;
+
+        if (accounts[user].attempts >= 3) {
+            accounts[user].locked = true;
+            loginLogs.push(user + " AUTO-LOCKED after 3 failed attempts");
+            document.getElementById("result").innerHTML = "❌ Account Auto-Locked.";
+        } else {
+            document.getElementById("result").innerHTML = "❌ Wrong password.";
+        }
+
+        saveData();
     }
 }
 
-function showMessage(name) {
-    document.getElementById("result").style.color = "black";
-    document.getElementById("result").innerHTML = `
-        <img src="${images[name]}" class="profile">
-        <div>${messages[name]}</div>
-        <br>
-        <button onclick="forgive()">Will you forgive me?</button>
-    `;
-    startHearts();
-}
-
 function forgive() {
-    forgiveClicked = true;
-    localStorage.setItem("forgiveClicked", "true");
+    lylaForgiven = true;
+    saveData();
     document.getElementById("result").innerHTML = "💖 Forgiveness recorded.";
 }
 
-function saveMessages() {
-    messages.ariana = document.getElementById("editAriana").value;
-    messages.bethany = document.getElementById("editBethany").value;
-    messages.beaty = document.getElementById("editBeaty").value;
-    messages.tiffany = document.getElementById("editTiffany").value;
+function showAdmin() {
 
-    localStorage.setItem("messages", JSON.stringify(messages));
-    alert("Saved 👑");
+    let accountList = Object.keys(accounts).map(user => `
+        <div style="border:1px solid #00ffcc; padding:5px; margin:5px 0;">
+        <strong>${user}</strong> |
+        Locked: ${accounts[user].locked} |
+        Attempts: ${accounts[user].attempts || 0}
+        <br>
+        <button onclick="editAccount('${user}')">Edit</button>
+        <button onclick="deleteAccount('${user}')">Delete</button>
+        <button onclick="toggleLock('${user}')">Lock/Unlock</button>
+        </div>
+    `).join("");
+
+    document.getElementById("adminPanel").innerHTML = `
+    👑 ADMIN PANEL<br><br>
+
+    Lyla Forgiven: ${lylaForgiven}<br><br>
+
+    <h4>Create Account</h4>
+    <input id="newUser" placeholder="Username">
+    <input id="newPass" placeholder="Password">
+    <textarea id="newMessage" placeholder="Message"></textarea>
+    <button onclick="createAccount()">Create</button>
+
+    <h4>Existing Accounts</h4>
+    ${accountList}
+
+    <h4>Login Logs</h4>
+    ${loginLogs.join("<br>")}
+    `;
 }
 
-function startHearts() {
-    setInterval(() => {
-        let heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(heart);
+function createAccount() {
+    let user = document.getElementById("newUser").value.toLowerCase();
+    let pass = document.getElementById("newPass").value;
+    let msg = document.getElementById("newMessage").value;
 
-        setTimeout(() => heart.remove(), 4000);
-    }, 500);
+    if (!user || !pass) {
+        alert("Fill all fields");
+        return;
+    }
+
+    accounts[user] = {
+        password: pass,
+        message: msg,
+        locked: false,
+        attempts: 0
+    };
+
+    saveData();
+    showAdmin();
+}
+
+function editAccount(user) {
+    let newPass = prompt("New password:", accounts[user].password);
+    let newMsg = prompt("New message:", accounts[user].message);
+
+    if (newPass !== null) accounts[user].password = newPass;
+    if (newMsg !== null) accounts[user].message = newMsg;
+
+    saveData();
+    showAdmin();
+}
+
+function deleteAccount(user) {
+    delete accounts[user];
+    saveData();
+    showAdmin();
+}
+
+function toggleLock(user) {
+    accounts[user].locked = !accounts[user].locked;
+    accounts[user].attempts = 0;
+    saveData();
+    showAdmin();
 }
 
 </script>
+
+
 
 
 </body>
