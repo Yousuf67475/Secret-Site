@@ -99,8 +99,6 @@ let accounts = {
     }
 };
 
-function login() {
-
   function login() {
 
     let user = document.getElementById("username").value.toLowerCase();
@@ -154,12 +152,13 @@ function login() {
     document.body.style.background = "black";
     result.style.color = "#00ffcc";
     result.style.fontSize = "16px";
-    result.innerHTML = accounts[user].message;
-}
-
+    result.innerHTML = accounts[user].message
+} 
+}  
 </script>
 
 </body>
 </html>
+
 
 
