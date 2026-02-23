@@ -4,331 +4,240 @@
 <title>Private System</title>
 <style>
 body {
-    background: black;
-    color: #00ffcc;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    transition: 0.4s;
+    margin:0;
+    background:black;
+    color:#00ffcc;
+    font-family:Arial;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
 .container {
-    background: #111;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00ffcc;
-    width: 350px;
-    text-align: center;
-    transition: 0.4s;
+    background:#111;
+    padding:25px;
+    border-radius:15px;
+    width:350px;
+    text-align:center;
+    box-shadow:0 0 20px #00ffcc;
 }
 
-input, select {
-    width: 90%;
-    padding: 10px;
-    margin: 8px 0;
-    background: black;
-    border: 1px solid #00ffcc;
-    color: #00ffcc;
+input, textarea {
+    width:90%;
+    padding:8px;
+    margin:6px 0;
 }
 
 button {
-    padding: 10px 20px;
-    background: #00ffcc;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    background: #00ffaa;
-}
-
-#result {
-    margin-top: 15px;
+    padding:8px 15px;
+    margin-top:8px;
+    cursor:pointer;
 }
 </style>
 </head>
 <body>
 
-<div class="container" id="mainBox">
-    <h2>PRIVATE SYSTEM</h2>
-    <div id="loginArea">
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">LOGIN</button>
-    </div>
-    <div id="result"></div>
+<div class="container" id="main">
+<h2>PRIVATE SYSTEM</h2>
+<input id="username" placeholder="Username"><br>
+<input id="password" type="password" placeholder="Password"><br>
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
 </div>
 
 <script>
 
-// DEFAULT ACCOUNTS
-let defaultAccounts = {
-    lyla: { password:"lyla123", message:"i really like you youre too beautiful to ignore" },
-    lylas: { password:"lyla321", message:"I am so sorry for making you feel insecure and uncomfortable.", button:"Will you forgive me? 🤍" },
-    emmanuella: { password:"emmanuella123", message:"you always make my day" },
-    scarlet: { password:"scarlet123", message:"You are someone to trust" },
-    brodie: { password:"brodie123", message:"someone to trust and a really good friend" },
-    ariana: { password:"ariana123", message:"Really funny and fun to play with." },
-    bethany: { password:"bethany123", message:"A bit annoying but good to talk to." },
-    beaty: { password:"beaty123", message:"Really funny and playful good to talk to." },
-    tiffany: { password:"tiffany123", message:"You are the most athletic girl I have ever seen." }
+let adminPassword = "Admingod2015";
+
+let accounts = JSON.parse(localStorage.getItem("accounts")) || {
+
+lyla:{
+password:"lyla123",
+message:"i really like you youre too beautiful to ignore",
+bg:"#000000",
+text:"#00ffcc",
+box:"#111",
+button:""
+},
+
+lylas:{
+password:"lyla321",
+message:"I am truly sorry for making you feel insecure and uncomfortable.",
+bg:"#1a1a1a",
+text:"#ffb6c1",
+box:"#111",
+button:"Will you forgive me?"
+},
+
+emmanuella:{
+password:"emmanuella123",
+message:"you always make my day",
+bg:"#000000",
+text:"#00ffcc",
+box:"#111",
+button:""
+},
+
+scarlet:{
+password:"scarlet123",
+message:"You are someone to trust",
+bg:"#000000",
+text:"#00ffcc",
+box:"#111",
+button:""
+},
+
+brodie:{
+password:"brodie123",
+message:"someone to trust and a really good friend",
+bg:"#000000",
+text:"#00ffcc",
+box:"#111",
+button:""
+}
+
 };
 
-// LOAD OR CREATE STORAGE
-let accounts = JSON.parse(localStorage.getItem("accounts")) || defaultAccounts;
-
-function saveAccounts() {
-    localStorage.setItem("accounts", JSON.stringify(accounts));
+function saveAccounts(){
+localStorage.setItem("accounts",JSON.stringify(accounts));
 }
 
-function login() {
-    let user = document.getElementById("username").value.toLowerCase();
-    let pass = document.getElementById("password").value;
-    let result = document.getElementById("result");
+function login(){
 
-    if (user === "admin" && pass === "Admingod2015") {
-        openAdmin();
-        return;
-    }
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
 
-    if (!accounts[user]) {
-        result.innerHTML = "❌ User not found.";
-        return;
-    }
-
-    if (accounts[user].password !== pass) {
-        result.innerHTML = "❌ Wrong password.";
-        return;
-    }
-
-    applyTheme(user);
-
-    result.innerHTML = "<div>"+accounts[user].message+"</div>";
-
-    if (accounts[user].button) {
-        result.innerHTML += `<br><button onclick="forgive()">${accounts[user].button}</button>`;
-    }
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
 }
 
-function forgive() {
-    alert("Thank you for giving me a chance 🤍");
+if(!accounts[user]){
+document.getElementById("result").innerHTML="User not found";
+return;
 }
 
-function applyTheme(user) {
-    let acc = accounts[user];
-    document.body.style.background = acc.bg || "black";
-    document.body.style.color = acc.textColor || "#00ffcc";
-    document.getElementById("mainBox").style.background = acc.boxColor || "#111";
+if(accounts[user].password!==pass){
+document.getElementById("result").innerHTML="Wrong password";
+return;
 }
 
-// ADMIN PANEL
-function openAdmin() {
-    document.getElementById("loginArea").style.display = "none";
-    let result = document.getElementById("result");
-
-    let userOptions = Object.keys(accounts).map(u => `<option value="${u}">${u}</option>`).join("");
-
-    result.innerHTML = `
-        <h3>ADMIN PANEL</h3>
-        <select id="editUser">${userOptions}</select><br>
-
-        <input type="text" id="newMessage" placeholder="New Message"><br>
-        <input type="color" id="bgColor"><br>
-        <input type="color" id="textColor"><br>
-        <input type="color" id="boxColor"><br>
-        <input type="text" id="buttonText" placeholder="Custom Button Text (optional)"><br>
-
-        <button onclick="saveChanges()">Save Changes</button>
-        <button onclick="location.reload()">Exit</button>
-    `;
+openAccount(user);
 }
 
-function saveChanges() {
-    let user = document.getElementById("editUser").value;
+function openAccount(user){
 
-    accounts[user].message = document.getElementById("newMessage").value || accounts[user].message;
-    accounts[user].bg = document.getElementById("bgColor").value;
-    accounts[user].textColor = document.getElementById("textColor").value;
-    accounts[user].boxColor = document.getElementById("boxColor").value;
+let acc=accounts[user];
 
-    let btn = document.getElementById("buttonText").value;
-    if (btn.trim() !== "") {
-        accounts[user].button = btn;
-    }
+document.body.style.background=acc.bg;
 
-    saveAccounts();
-    alert("Saved permanently.");
-}
-
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-<title>Private System</title>
-<style>
-body {
-    background: black;
-    color: #00ffcc;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    transition: 0.4s;
-}
-
-.container {
-    background: #111;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00ffcc;
-    width: 350px;
-    text-align: center;
-    transition: 0.4s;
-}
-
-input, select {
-    width: 90%;
-    padding: 10px;
-    margin: 8px 0;
-    background: black;
-    border: 1px solid #00ffcc;
-    color: #00ffcc;
-}
-
-button {
-    padding: 10px 20px;
-    background: #00ffcc;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    background: #00ffaa;
-}
-
-#result {
-    margin-top: 15px;
-}
-</style>
-</head>
-<body>
-
-<div class="container" id="mainBox">
-    <h2>PRIVATE SYSTEM</h2>
-    <div id="loginArea">
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">LOGIN</button>
-    </div>
-    <div id="result"></div>
+document.getElementById("main").innerHTML=`
+<h2>${user}</h2>
+<div style="background:${acc.box};padding:15px;border-radius:10px;color:${acc.text};">
+${acc.message}
 </div>
+${acc.button ? `<br><button onclick="forgive()">${acc.button}</button>`:""}
+<br><br>
+<button onclick="location.reload()">Logout</button>
+`;
 
-<script>
+}
 
-// DEFAULT ACCOUNTS
-let defaultAccounts = {
-    lyla: { password:"lyla123", message:"i really like you youre too beautiful to ignore" },
-    lylas: { password:"lyla321", message:"I am so sorry for making you feel insecure and uncomfortable.", button:"Will you forgive me? 🤍" },
-    emmanuella: { password:"emmanuella123", message:"you always make my day" },
-    scarlet: { password:"scarlet123", message:"You are someone to trust" },
-    brodie: { password:"brodie123", message:"someone to trust and a really good friend" },
-    ariana: { password:"ariana123", message:"Really funny and fun to play with." },
-    bethany: { password:"bethany123", message:"A bit annoying but good to talk to." },
-    beaty: { password:"beaty123", message:"Really funny and playful good to talk to." },
-    tiffany: { password:"tiffany123", message:"You are the most athletic girl I have ever seen." }
+function forgive(){
+alert("Response recorded.");
+}
+
+function openAdmin(){
+
+let list="";
+for(let u in accounts){
+list+=`<option value="${u}">${u}</option>`;
+}
+
+document.getElementById("main").innerHTML=`
+<h2>ADMIN PANEL</h2>
+
+<select id="editUser">${list}</select><br>
+
+<input id="newUsername" placeholder="Change Username"><br>
+<input id="newPassword" placeholder="Change Password"><br>
+
+<textarea id="newMessage" placeholder="New Message"></textarea><br>
+
+<label>Background</label><br>
+<input type="color" id="bgColor"><br>
+
+<label>Text Color</label><br>
+<input type="color" id="textColor"><br>
+
+<label>Box Color</label><br>
+<input type="color" id="boxColor"><br>
+
+<input id="buttonText" placeholder="Button Text (optional)"><br>
+
+<button onclick="saveChanges()">Save Changes</button>
+<button onclick="deleteAccount()">Delete</button>
+<button onclick="createAccount()">Create New</button>
+<button onclick="location.reload()">Logout</button>
+`;
+
+}
+
+function saveChanges(){
+
+let oldUser=document.getElementById("editUser").value;
+let newUser=document.getElementById("newUsername").value.toLowerCase()||oldUser;
+let newPass=document.getElementById("newPassword").value;
+
+if(newUser!==oldUser){
+accounts[newUser]=accounts[oldUser];
+delete accounts[oldUser];
+}
+
+accounts[newUser].message=document.getElementById("newMessage").value||accounts[newUser].message;
+accounts[newUser].bg=document.getElementById("bgColor").value||accounts[newUser].bg;
+accounts[newUser].text=document.getElementById("textColor").value||accounts[newUser].text;
+accounts[newUser].box=document.getElementById("boxColor").value||accounts[newUser].box;
+accounts[newUser].button=document.getElementById("buttonText").value||accounts[newUser].button;
+
+if(newPass.trim()!==""){
+accounts[newUser].password=newPass;
+}
+
+saveAccounts();
+alert("Saved");
+location.reload();
+}
+
+function deleteAccount(){
+let user=document.getElementById("editUser").value;
+delete accounts[user];
+saveAccounts();
+alert("Deleted");
+location.reload();
+}
+
+function createAccount(){
+
+let name=prompt("New username:");
+if(!name) return;
+
+let pass=prompt("Password:");
+if(!pass) return;
+
+accounts[name.toLowerCase()] = {
+password:pass,
+message:"New account message",
+bg:"#000000",
+text:"#00ffcc",
+box:"#111",
+button:""
 };
 
-// LOAD OR CREATE STORAGE
-let accounts = JSON.parse(localStorage.getItem("accounts")) || defaultAccounts;
-
-function saveAccounts() {
-    localStorage.setItem("accounts", JSON.stringify(accounts));
-}
-
-function login() {
-    let user = document.getElementById("username").value.toLowerCase();
-    let pass = document.getElementById("password").value;
-    let result = document.getElementById("result");
-
-    if (user === "admin" && pass === "Admingod2015") {
-        openAdmin();
-        return;
-    }
-
-    if (!accounts[user]) {
-        result.innerHTML = "❌ User not found.";
-        return;
-    }
-
-    if (accounts[user].password !== pass) {
-        result.innerHTML = "❌ Wrong password.";
-        return;
-    }
-
-    applyTheme(user);
-
-    result.innerHTML = "<div>"+accounts[user].message+"</div>";
-
-    if (accounts[user].button) {
-        result.innerHTML += `<br><button onclick="forgive()">${accounts[user].button}</button>`;
-    }
-}
-
-function forgive() {
-    alert("Thank you for giving me a chance 🤍");
-}
-
-function applyTheme(user) {
-    let acc = accounts[user];
-    document.body.style.background = acc.bg || "black";
-    document.body.style.color = acc.textColor || "#00ffcc";
-    document.getElementById("mainBox").style.background = acc.boxColor || "#111";
-}
-
-// ADMIN PANEL
-function openAdmin() {
-    document.getElementById("loginArea").style.display = "none";
-    let result = document.getElementById("result");
-
-    let userOptions = Object.keys(accounts).map(u => `<option value="${u}">${u}</option>`).join("");
-
-    result.innerHTML = `
-        <h3>ADMIN PANEL</h3>
-        <select id="editUser">${userOptions}</select><br>
-
-        <input type="text" id="newMessage" placeholder="New Message"><br>
-        <input type="color" id="bgColor"><br>
-        <input type="color" id="textColor"><br>
-        <input type="color" id="boxColor"><br>
-        <input type="text" id="buttonText" placeholder="Custom Button Text (optional)"><br>
-
-        <button onclick="saveChanges()">Save Changes</button>
-        <button onclick="location.reload()">Exit</button>
-    `;
-}
-
-function saveChanges() {
-    let user = document.getElementById("editUser").value;
-
-    accounts[user].message = document.getElementById("newMessage").value || accounts[user].message;
-    accounts[user].bg = document.getElementById("bgColor").value;
-    accounts[user].textColor = document.getElementById("textColor").value;
-    accounts[user].boxColor = document.getElementById("boxColor").value;
-
-    let btn = document.getElementById("buttonText").value;
-    if (btn.trim() !== "") {
-        accounts[user].button = btn;
-    }
-
-    saveAccounts();
-    alert("Saved permanently.");
+saveAccounts();
+alert("Account created");
+location.reload();
 }
 
 </script>
