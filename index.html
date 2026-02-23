@@ -1,49 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Private System</title>
+<title>Cyber Access Portal</title>
+
 <style>
 body {
     margin:0;
-    background:black;
-    color:#00ffcc;
-    font-family:Arial;
+    background:#050816;
+    color:#00ccff;
+    font-family: "Courier New", monospace;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
+    overflow:hidden;
 }
 
-.container {
-    background:#111;
-    padding:25px;
-    border-radius:15px;
-    width:350px;
-    text-align:center;
-    box-shadow:0 0 20px #00ffcc;
+#terminal {
+    width:500px;
+    max-width:90%;
+    background:rgba(0,20,40,0.6);
+    backdrop-filter: blur(10px);
+    border:1px solid #00ccff;
+    box-shadow:0 0 25px #00ccff;
+    padding:20px;
+    border-radius:10px;
 }
 
-input, textarea {
-    width:90%;
-    padding:8px;
-    margin:6px 0;
+.line {
+    margin:5px 0;
+}
+
+.cursor {
+    display:inline-block;
+    width:10px;
+    background:#00ccff;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%{opacity:1;}
+    50%{opacity:0;}
+    100%{opacity:1;}
 }
 
 button {
+    background:#00ccff;
+    border:none;
     padding:8px 15px;
-    margin-top:8px;
+    margin-top:10px;
     cursor:pointer;
+}
+
+select,input,textarea {
+    width:100%;
+    margin:5px 0;
+    background:#02121f;
+    color:#00ccff;
+    border:1px solid #00ccff;
+    padding:6px;
 }
 </style>
 </head>
+
 <body>
 
-<div class="container" id="main">
-<h2>PRIVATE SYSTEM</h2>
-<input id="username" placeholder="Username"><br>
-<input id="password" type="password" placeholder="Password"><br>
-<button onclick="login()">LOGIN</button>
-<div id="result"></div>
+<div id="terminal">
+<div id="output"></div>
 </div>
 
 <script>
@@ -51,62 +74,70 @@ button {
 let adminPassword = "Admingod2015";
 
 let accounts = JSON.parse(localStorage.getItem("accounts")) || {
-
-lyla:{
-password:"lyla123",
-message:"i really like you youre too beautiful to ignore",
-bg:"#000000",
-text:"#00ffcc",
-box:"#111",
-button:""
-},
-
-lylas:{
-password:"lyla321",
-message:"I am truly sorry for making you feel insecure and uncomfortable.",
-bg:"#1a1a1a",
-text:"#ffb6c1",
-box:"#111",
-button:"Will you forgive me?"
-},
-
-emmanuella:{
-password:"emmanuella123",
-message:"you always make my day",
-bg:"#000000",
-text:"#00ffcc",
-box:"#111",
-button:""
-},
-
-scarlet:{
-password:"scarlet123",
-message:"You are someone to trust",
-bg:"#000000",
-text:"#00ffcc",
-box:"#111",
-button:""
-},
-
-brodie:{
-password:"brodie123",
-message:"someone to trust and a really good friend",
-bg:"#000000",
-text:"#00ffcc",
-box:"#111",
-button:""
-}
-
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."},
+emmanuella:{password:"emmanuella123",message:"you always make my day"},
+brodie:{password:"brodie123",message:"someone to trust and a really good friend"}
 };
 
 function saveAccounts(){
 localStorage.setItem("accounts",JSON.stringify(accounts));
 }
 
-function login(){
+let output = document.getElementById("output");
 
-let user=document.getElementById("username").value.toLowerCase();
-let pass=document.getElementById("password").value;
+function typeLine(text, callback){
+let i=0;
+let div=document.createElement("div");
+div.className="line";
+output.appendChild(div);
+
+let interval=setInterval(()=>{
+div.innerHTML=text.substring(0,i);
+i++;
+if(i>text.length){
+clearInterval(interval);
+if(callback) callback();
+}
+},30);
+}
+
+function start(){
+typeLine("> CYBER ACCESS PORTAL");
+typeLine("> INITIALIZING SYSTEM...");
+setTimeout(()=>{
+askUsername();
+},800);
+}
+
+function askUsername(){
+typeLine("> ENTER USERNAME:");
+createInput("username", askPassword);
+}
+
+function askPassword(username){
+typeLine("> ENTER PASSWORD:");
+createInput("password",(pass)=>{
+authenticate(username,pass);
+},true);
+}
+
+function createInput(type, callback, hidden=false){
+let input=document.createElement("input");
+input.type= hidden ? "password" : "text";
+output.appendChild(input);
+input.focus();
+
+input.addEventListener("keydown",function(e){
+if(e.key==="Enter"){
+let value=input.value;
+input.remove();
+callback(value);
+}
+});
+}
+
+function authenticate(user,pass){
 
 if(user==="admin" && pass===adminPassword){
 openAdmin();
@@ -114,80 +145,65 @@ return;
 }
 
 if(!accounts[user]){
-document.getElementById("result").innerHTML="User not found";
+typeLine("> ACCESS DENIED");
 return;
 }
 
 if(accounts[user].password!==pass){
-document.getElementById("result").innerHTML="Wrong password";
+typeLine("> ACCESS DENIED");
 return;
 }
 
+typeLine("> ACCESS GRANTED",()=>{
+setTimeout(()=>{
 openAccount(user);
+},500);
+});
 }
 
 function openAccount(user){
-
-let acc=accounts[user];
-
-document.body.style.background=acc.bg;
-
-document.getElementById("main").innerHTML=`
-<h2>${user}</h2>
-<div style="background:${acc.box};padding:15px;border-radius:10px;color:${acc.text};">
-${acc.message}
-</div>
-${acc.button ? `<br><button onclick="forgive()">${acc.button}</button>`:""}
-<br><br>
-<button onclick="location.reload()">Logout</button>
-`;
-
-}
-
-function forgive(){
-alert("Response recorded.");
+output.innerHTML="";
+typeLine("> WELCOME "+user.toUpperCase());
+typeLine("> LOADING PROFILE...");
+setTimeout(()=>{
+typeLine(accounts[user].message);
+},800);
 }
 
 function openAdmin(){
+output.innerHTML="";
+typeLine("> ADMIN MODE ACTIVATED");
+setTimeout(()=>{
+showAdminPanel();
+},800);
+}
+
+function showAdminPanel(){
 
 let list="";
 for(let u in accounts){
 list+=`<option value="${u}">${u}</option>`;
 }
 
-document.getElementById("main").innerHTML=`
-<h2>ADMIN PANEL</h2>
+output.innerHTML=`
+<h3>ADMIN PANEL</h3>
 
-<select id="editUser">${list}</select><br>
+<select id="editUser">${list}</select>
 
-<input id="newUsername" placeholder="Change Username"><br>
-<input id="newPassword" placeholder="Change Password"><br>
+<input id="newUsername" placeholder="Change Username">
+<input id="newPassword" placeholder="Change Password">
+<textarea id="newMessage" placeholder="New Message"></textarea>
 
-<textarea id="newMessage" placeholder="New Message"></textarea><br>
-
-<label>Background</label><br>
-<input type="color" id="bgColor"><br>
-
-<label>Text Color</label><br>
-<input type="color" id="textColor"><br>
-
-<label>Box Color</label><br>
-<input type="color" id="boxColor"><br>
-
-<input id="buttonText" placeholder="Button Text (optional)"><br>
-
-<button onclick="saveChanges()">Save Changes</button>
+<button onclick="saveChanges()">Save</button>
+<button onclick="createAccount()">Create</button>
 <button onclick="deleteAccount()">Delete</button>
-<button onclick="createAccount()">Create New</button>
-<button onclick="location.reload()">Logout</button>
+<button onclick="location.reload()">Exit</button>
 `;
-
 }
 
 function saveChanges(){
-
 let oldUser=document.getElementById("editUser").value;
-let newUser=document.getElementById("newUsername").value.toLowerCase()||oldUser;
+let newUser=document.getElementById("newUsername").value||oldUser;
 let newPass=document.getElementById("newPassword").value;
 
 if(newUser!==oldUser){
@@ -196,10 +212,6 @@ delete accounts[oldUser];
 }
 
 accounts[newUser].message=document.getElementById("newMessage").value||accounts[newUser].message;
-accounts[newUser].bg=document.getElementById("bgColor").value||accounts[newUser].bg;
-accounts[newUser].text=document.getElementById("textColor").value||accounts[newUser].text;
-accounts[newUser].box=document.getElementById("boxColor").value||accounts[newUser].box;
-accounts[newUser].button=document.getElementById("buttonText").value||accounts[newUser].button;
 
 if(newPass.trim()!==""){
 accounts[newUser].password=newPass;
@@ -219,26 +231,21 @@ location.reload();
 }
 
 function createAccount(){
-
-let name=prompt("New username:");
-if(!name) return;
-
+let name=prompt("Username:");
 let pass=prompt("Password:");
-if(!pass) return;
+if(!name||!pass)return;
 
-accounts[name.toLowerCase()] = {
+accounts[name]={
 password:pass,
-message:"New account message",
-bg:"#000000",
-text:"#00ffcc",
-box:"#111",
-button:""
+message:"New account message"
 };
 
 saveAccounts();
-alert("Account created");
+alert("Created");
 location.reload();
 }
+
+start();
 
 </script>
 
