@@ -138,29 +138,79 @@ callback(value);
 }
 
 function authenticate(user,pass){
+<script>
+function authenticate(user,pass){
 
 if(user==="admin" && pass===adminPassword){
 openAdmin();
 return;
 }
 
-if(!accounts[user]){
-typeLine("> ACCESS DENIED");
-return;
-}
-
-if(accounts[user].password!==pass){
+if(!accounts[user] || accounts[user].password!==pass){
 typeLine("> ACCESS DENIED");
 return;
 }
 
 typeLine("> ACCESS GRANTED",()=>{
-setTimeout(()=>{
-openAccount(user);
-},500);
+glowPulse(()=>{
+startLoading(user);
 });
+});
+
 }
 
+<script>
+
+function glowPulse(callback){
+let lines=document.querySelectorAll(".line");
+let last=lines[lines.length-1];
+
+last.style.textShadow="0 0 15px #00ccff";
+
+setTimeout(()=>{
+last.style.textShadow="0 0 5px #00ccff";
+if(callback) callback();
+},500);
+}
+
+function startLoading(user){
+
+typeLine("> INITIALIZING USER PROFILE...");
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="18px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 20px #00ccff";
+bar.style.transition="width 1.5s ease";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+glitchEffect(()=>{
+openAccount(user);
+});
+},1700);
+
+}
+
+function glitchEffect(callback){
+
+document.body.style.filter="contrast(150%) brightness(120%)";
+
+setTimeout(()=>{
+document.body.style.filter="none";
+if(callback) callback();
+},200);
+
+}
+
+</script>
 function openAccount(user){
 output.innerHTML="";
 typeLine("> WELCOME "+user.toUpperCase());
@@ -251,3 +301,4 @@ start();
 
 </body>
 </html>
+
