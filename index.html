@@ -1,83 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Cyber Access Portal</title>
+<title>Private System</title>
 
 <style>
-body {
-    margin:0;
-    background:#050816;
-    color:#00ccff;
-    font-family: "Courier New", monospace;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    overflow:hidden;
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
-#terminal {
-    width:500px;
-    max-width:90%;
-    background:rgba(0,20,40,0.6);
-    backdrop-filter: blur(10px);
-    border:1px solid #00ccff;
-    box-shadow:0 0 25px #00ccff;
-    padding:20px;
-    border-radius:10px;
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
 }
 
-.line {
-    margin:5px 0;
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
 }
 
-.cursor {
-    display:inline-block;
-    width:10px;
-    background:#00ccff;
-    animation: blink 1s infinite;
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
 }
 
-@keyframes blink {
-    0%{opacity:1;}
-    50%{opacity:0;}
-    100%{opacity:1;}
+button:hover{
+background:#0099cc;
 }
 
-button {
-    background:#00ccff;
-    border:none;
-    padding:8px 15px;
-    margin-top:10px;
-    cursor:pointer;
-}
-
-select,input,textarea {
-    width:100%;
-    margin:5px 0;
-    background:#02121f;
-    color:#00ccff;
-    border:1px solid #00ccff;
-    padding:6px;
+#result{
+margin-top:15px;
+min-height:50px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="terminal">
-<div id="output"></div>
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
 </div>
 
 <script>
 
-<script>
+let output=document.getElementById("result");
 
-let output = document.getElementById("result");
-
-let accounts = {
-    lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
-    lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
 };
 
 let adminPassword="admin123";
@@ -96,31 +86,20 @@ output.innerHTML="❌ ACCESS DENIED";
 return;
 }
 
-output.innerHTML="> ACCESS GRANTED";
-glowPulse(()=>{
 startLoading(user);
-});
-}
-
-function glowPulse(callback){
-output.style.textShadow="0 0 15px #00ccff";
-setTimeout(()=>{
-output.style.textShadow="0 0 5px #00ccff";
-callback();
-},500);
 }
 
 function startLoading(user){
 
-output.innerHTML+="<br>> INITIALIZING PROFILE...";
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
 
 let bar=document.createElement("div");
 bar.style.marginTop="10px";
-bar.style.height="18px";
+bar.style.height="15px";
 bar.style.width="0%";
 bar.style.background="#00ccff";
-bar.style.boxShadow="0 0 20px #00ccff";
-bar.style.transition="width 1.5s ease";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
 
 output.appendChild(bar);
 
@@ -152,152 +131,10 @@ output.innerHTML=accounts[user].message;
 }
 
 function openAdmin(){
-output.innerHTML="ADMIN MODE ACTIVATED";
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
 }
-
-</script>
-
-<script>
-
-function glowPulse(callback){
-let lines=document.querySelectorAll(".line");
-let last=lines[lines.length-1];
-
-last.style.textShadow="0 0 15px #00ccff";
-
-setTimeout(()=>{
-last.style.textShadow="0 0 5px #00ccff";
-if(callback) callback();
-},500);
-}
-
-function startLoading(user){
-
-typeLine("> INITIALIZING USER PROFILE...");
-
-let bar=document.createElement("div");
-bar.style.marginTop="10px";
-bar.style.height="18px";
-bar.style.width="0%";
-bar.style.background="#00ccff";
-bar.style.boxShadow="0 0 20px #00ccff";
-bar.style.transition="width 1.5s ease";
-
-output.appendChild(bar);
-
-setTimeout(()=>{
-bar.style.width="100%";
-},100);
-
-setTimeout(()=>{
-glitchEffect(()=>{
-openAccount(user);
-});
-},1700);
-
-}
-
-function glitchEffect(callback){
-
-document.body.style.filter="contrast(150%) brightness(120%)";
-
-setTimeout(()=>{
-document.body.style.filter="none";
-if(callback) callback();
-},200);
-
-}
-
-</script>
-function openAccount(user){
-output.innerHTML="";
-typeLine("> WELCOME "+user.toUpperCase());
-typeLine("> LOADING PROFILE...");
-setTimeout(()=>{
-typeLine(accounts[user].message);
-},800);
-}
-
-function openAdmin(){
-output.innerHTML="";
-typeLine("> ADMIN MODE ACTIVATED");
-setTimeout(()=>{
-showAdminPanel();
-},800);
-}
-
-function showAdminPanel(){
-
-let list="";
-for(let u in accounts){
-list+=`<option value="${u}">${u}</option>`;
-}
-
-output.innerHTML=`
-<h3>ADMIN PANEL</h3>
-
-<select id="editUser">${list}</select>
-
-<input id="newUsername" placeholder="Change Username">
-<input id="newPassword" placeholder="Change Password">
-<textarea id="newMessage" placeholder="New Message"></textarea>
-
-<button onclick="saveChanges()">Save</button>
-<button onclick="createAccount()">Create</button>
-<button onclick="deleteAccount()">Delete</button>
-<button onclick="location.reload()">Exit</button>
-`;
-}
-
-function saveChanges(){
-let oldUser=document.getElementById("editUser").value;
-let newUser=document.getElementById("newUsername").value||oldUser;
-let newPass=document.getElementById("newPassword").value;
-
-if(newUser!==oldUser){
-accounts[newUser]=accounts[oldUser];
-delete accounts[oldUser];
-}
-
-accounts[newUser].message=document.getElementById("newMessage").value||accounts[newUser].message;
-
-if(newPass.trim()!==""){
-accounts[newUser].password=newPass;
-}
-
-saveAccounts();
-alert("Saved");
-location.reload();
-}
-
-function deleteAccount(){
-let user=document.getElementById("editUser").value;
-delete accounts[user];
-saveAccounts();
-alert("Deleted");
-location.reload();
-}
-
-function createAccount(){
-let name=prompt("Username:");
-let pass=prompt("Password:");
-if(!name||!pass)return;
-
-accounts[name]={
-password:pass,
-message:"New account message"
-};
-
-saveAccounts();
-alert("Created");
-location.reload();
-}
-
-start();
 
 </script>
 
 </body>
 </html>
-
-
