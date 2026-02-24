@@ -71,75 +71,20 @@ select,input,textarea {
 
 <script>
 
-let adminPassword = "Admingod2015";
+<script>
 
-let accounts = JSON.parse(localStorage.getItem("accounts")) || {
-lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
-lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."},
-emmanuella:{password:"emmanuella123",message:"you always make my day"},
-brodie:{password:"brodie123",message:"someone to trust and a really good friend"}
+let output = document.getElementById("result");
+
+let accounts = {
+    lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+    lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
 };
 
-function saveAccounts(){
-localStorage.setItem("accounts",JSON.stringify(accounts));
-}
+let adminPassword="admin123";
 
-let output = document.getElementById("output");
-
-function typeLine(text, callback){
-let i=0;
-let div=document.createElement("div");
-div.className="line";
-output.appendChild(div);
-
-let interval=setInterval(()=>{
-div.innerHTML=text.substring(0,i);
-i++;
-if(i>text.length){
-clearInterval(interval);
-if(callback) callback();
-}
-},30);
-}
-
-function start(){
-typeLine("> CYBER ACCESS PORTAL");
-typeLine("> INITIALIZING SYSTEM...");
-setTimeout(()=>{
-askUsername();
-},800);
-}
-
-function askUsername(){
-typeLine("> ENTER USERNAME:");
-createInput("username", askPassword);
-}
-
-function askPassword(username){
-typeLine("> ENTER PASSWORD:");
-createInput("password",(pass)=>{
-authenticate(username,pass);
-},true);
-}
-
-function createInput(type, callback, hidden=false){
-let input=document.createElement("input");
-input.type= hidden ? "password" : "text";
-output.appendChild(input);
-input.focus();
-
-input.addEventListener("keydown",function(e){
-if(e.key==="Enter"){
-let value=input.value;
-input.remove();
-callback(value);
-}
-});
-}
-
-function authenticate(user,pass){
-<script>
-function authenticate(user,pass){
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
 
 if(user==="admin" && pass===adminPassword){
 openAdmin();
@@ -147,17 +92,70 @@ return;
 }
 
 if(!accounts[user] || accounts[user].password!==pass){
-typeLine("> ACCESS DENIED");
+output.innerHTML="❌ ACCESS DENIED";
 return;
 }
 
-typeLine("> ACCESS GRANTED",()=>{
+output.innerHTML="> ACCESS GRANTED";
 glowPulse(()=>{
 startLoading(user);
 });
-});
-
 }
+
+function glowPulse(callback){
+output.style.textShadow="0 0 15px #00ccff";
+setTimeout(()=>{
+output.style.textShadow="0 0 5px #00ccff";
+callback();
+},500);
+}
+
+function startLoading(user){
+
+output.innerHTML+="<br>> INITIALIZING PROFILE...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="18px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 20px #00ccff";
+bar.style.transition="width 1.5s ease";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="ADMIN MODE ACTIVATED";
+}
+
+</script>
 
 <script>
 
@@ -301,4 +299,5 @@ start();
 
 </body>
 </html>
+
 
