@@ -137,4 +137,1116 @@ output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
 </script>
 
 </body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Private System</title>
+
+<style>
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
+}
+
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0099cc;
+}
+
+#result{
+margin-top:15px;
+min-height:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
+</div>
+
+<script>
+
+let output=document.getElementById("result");
+
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+};
+
+let adminPassword="admin123";
+
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
+}
+
+if(!accounts[user] || accounts[user].password!==pass){
+output.innerHTML="❌ ACCESS DENIED";
+return;
+}
+
+startLoading(user);
+}
+
+function startLoading(user){
+
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="15px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Private System</title>
+
+<style>
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
+}
+
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0099cc;
+}
+
+#result{
+margin-top:15px;
+min-height:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
+</div>
+
+<script>
+
+let output=document.getElementById("result");
+
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+};
+
+let adminPassword="admin123";
+
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
+}
+
+if(!accounts[user] || accounts[user].password!==pass){
+output.innerHTML="❌ ACCESS DENIED";
+return;
+}
+
+startLoading(user);
+}
+
+function startLoading(user){
+
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="15px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Private System</title>
+
+<style>
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
+}
+
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0099cc;
+}
+
+#result{
+margin-top:15px;
+min-height:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
+</div>
+
+<script>
+
+let output=document.getElementById("result");
+
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+};
+
+let adminPassword="admin123";
+
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
+}
+
+if(!accounts[user] || accounts[user].password!==pass){
+output.innerHTML="❌ ACCESS DENIED";
+return;
+}
+
+startLoading(user);
+}
+
+function startLoading(user){
+
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="15px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Private System</title>
+
+<style>
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
+}
+
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0099cc;
+}
+
+#result{
+margin-top:15px;
+min-height:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
+</div>
+
+<script>
+
+let output=document.getElementById("result");
+
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+};
+
+let adminPassword="admin123";
+
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
+}
+
+if(!accounts[user] || accounts[user].password!==pass){
+output.innerHTML="❌ ACCESS DENIED";
+return;
+}
+
+startLoading(user);
+}
+
+function startLoading(user){
+
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="15px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Private System</title>
+
+<style>
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
+}
+
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0099cc;
+}
+
+#result{
+margin-top:15px;
+min-height:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
+</div>
+
+<script>
+
+let output=document.getElementById("result");
+
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+};
+
+let adminPassword="admin123";
+
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
+}
+
+if(!accounts[user] || accounts[user].password!==pass){
+output.innerHTML="❌ ACCESS DENIED";
+return;
+}
+
+startLoading(user);
+}
+
+function startLoading(user){
+
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="15px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Private System</title>
+
+<style>
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
+}
+
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0099cc;
+}
+
+#result{
+margin-top:15px;
+min-height:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
+</div>
+
+<script>
+
+let output=document.getElementById("result");
+
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+};
+
+let adminPassword="admin123";
+
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
+}
+
+if(!accounts[user] || accounts[user].password!==pass){
+output.innerHTML="❌ ACCESS DENIED";
+return;
+}
+
+startLoading(user);
+}
+
+function startLoading(user){
+
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="15px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Private System</title>
+
+<style>
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
+}
+
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0099cc;
+}
+
+#result{
+margin-top:15px;
+min-height:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
+</div>
+
+<script>
+
+let output=document.getElementById("result");
+
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+};
+
+let adminPassword="admin123";
+
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
+}
+
+if(!accounts[user] || accounts[user].password!==pass){
+output.innerHTML="❌ ACCESS DENIED";
+return;
+}
+
+startLoading(user);
+}
+
+function startLoading(user){
+
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="15px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<title>Private System</title>
+
+<style>
+body{
+background:black;
+color:#00ccff;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:#111;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #00ccff;
+width:350px;
+text-align:center;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px 0;
+background:black;
+border:1px solid #00ccff;
+color:#00ccff;
+}
+
+button{
+padding:10px 20px;
+background:#00ccff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#0099cc;
+}
+
+#result{
+margin-top:15px;
+min-height:50px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>PRIVATE SYSTEM</h2>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">LOGIN</button>
+<div id="result"></div>
+</div>
+
+<script>
+
+let output=document.getElementById("result");
+
+let accounts={
+lyla:{password:"lyla123",message:"i really like you youre too beautiful to ignore"},
+lylas:{password:"lyla321",message:"I am truly sorry for making you feel insecure and uncomfortable."}
+};
+
+let adminPassword="admin123";
+
+function login(){
+let user=document.getElementById("username").value.toLowerCase();
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass===adminPassword){
+openAdmin();
+return;
+}
+
+if(!accounts[user] || accounts[user].password!==pass){
+output.innerHTML="❌ ACCESS DENIED";
+return;
+}
+
+startLoading(user);
+}
+
+function startLoading(user){
+
+output.innerHTML="> ACCESS GRANTED<br>> LOADING...";
+
+let bar=document.createElement("div");
+bar.style.marginTop="10px";
+bar.style.height="15px";
+bar.style.width="0%";
+bar.style.background="#00ccff";
+bar.style.boxShadow="0 0 15px #00ccff";
+bar.style.transition="width 1.5s";
+
+output.appendChild(bar);
+
+setTimeout(()=>{
+bar.style.width="100%";
+},100);
+
+setTimeout(()=>{
+openAccount(user);
+},1700);
+}
+
+function openAccount(user){
+
+if(user==="lylas"){
+output.innerHTML=`
+<div style="color:#ffb6c1;font-size:18px;">
+I am truly sorry for making you feel insecure and uncomfortable.<br><br>
+You deserve to feel safe and respected.<br><br>
+<button onclick="alert('Thank you 🤍')" 
+style="background:#ffb6c1;color:black;padding:10px 20px;border:none;cursor:pointer;">
+Will you forgive me? 🤍
+</button>
+</div>`;
+return;
+}
+
+output.innerHTML=accounts[user].message;
+}
+
+function openAdmin(){
+output.innerHTML="<h3>ADMIN MODE ACTIVATED</h3>";
+}
+
+</script>
+
+</body>
 </html>
