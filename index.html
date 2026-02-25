@@ -86,7 +86,7 @@ animation:glitch 0.2s infinite;
 
 // Accounts
 let accounts=JSON.parse(localStorage.getItem("accounts"))||{
-admin:{password:"admin123",admin:true},
+admin:{password:"admingod2015",admin:true},
 lyla:{password:"lyla123",message:"You are too beautiful to ignore."}
 };
 
@@ -151,9 +151,56 @@ document.body.innerHTML="<h1 style='color:red;'>💀 SYSTEM DESTROYED 💀</h1>"
 }
 
 function openAdmin(){
-document.getElementById("loginBox").innerHTML="<h2>ADMIN MODE</h2><p>Welcome Admin</p>";
+document.getElementById("loginBox").innerHTML=`
+<h2>ADMIN MODE</h2>
+<button onclick="exportAccounts()">💾 Export Backup</button>
+<button onclick="importAccounts()">📂 Import Backup</button>
+<button onclick="location.reload()">Exit</button>
+`;
+}
+function exportAccounts(){
+
+let data=JSON.stringify(accounts,null,2);
+
+let blob=new Blob([data],{type:"application/json"});
+let url=URL.createObjectURL(blob);
+
+let a=document.createElement("a");
+a.href=url;
+a.download="accounts_backup.json";
+a.click();
+
+URL.revokeObjectURL(url);
+
+alert("Backup downloaded!");
 }
 
+function importAccounts(){
+
+let input=document.createElement("input");
+input.type="file";
+input.accept=".json";
+
+input.onchange=function(e){
+let file=e.target.files[0];
+let reader=new FileReader();
+
+reader.onload=function(){
+try{
+accounts=JSON.parse(reader.result);
+save();
+alert("Backup restored!");
+location.reload();
+}catch{
+alert("Invalid backup file!");
+}
+};
+
+reader.readAsText(file);
+};
+
+input.click();
+}
 // MATRIX RAIN
 let canvas=document.getElementById("matrix");
 let ctx=canvas.getContext("2d");
@@ -194,3 +241,4 @@ setInterval(draw,33);
 
 </body>
 </html>
+
