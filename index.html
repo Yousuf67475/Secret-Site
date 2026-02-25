@@ -1,140 +1,184 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Private Letter</title>
+<title>Private Portal</title>
+
 <style>
 body {
-    margin: 0;
-    background: #eef2f7;
-    font-family: Georgia, serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f4f6f8;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
 
 .container {
-    background: white;
-    width: 380px;
-    padding: 35px;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    text-align: center;
-    transition: all 0.4s ease;
+  background:white;
+  width:360px;
+  padding:25px;
+  border-radius:15px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  text-align:center;
 }
 
-h2 {
-    margin-bottom: 20px;
-    color: #444;
-}
-
-input {
-    width: 92%;
-    padding: 10px;
-    margin: 8px 0;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
+input, button, textarea {
+  width:90%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
 }
 
 button {
-    padding: 10px 20px;
-    margin-top: 12px;
-    background: #5b7db1;
-    border: none;
-    border-radius: 6px;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s;
+  background:#4a90e2;
+  color:white;
+  border:none;
+  cursor:pointer;
 }
 
 button:hover {
-    background: #46638f;
+  background:#357bd8;
 }
 
 #result {
-    margin-top: 20px;
-    font-size: 15px;
-    color: #333;
-    line-height: 1.7;
-    opacity: 0;
-    transition: opacity 0.8s ease;
+  margin-top:15px;
+  font-size:15px;
 }
 
-.letter {
-    text-align: left;
-    font-size: 16px;
-}
-
-.signature {
-    margin-top: 20px;
-    font-style: italic;
-    color: #666;
+.admin-panel {
+  margin-top:15px;
+  border-top:1px solid #ddd;
+  padding-top:15px;
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
-    <h2>Private Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Open</button>
-    <div id="result"></div>
+  <h2>Private Portal</h2>
+
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+
+  <div id="result"></div>
 </div>
 
 <script>
-let accounts = {
-    admin: { password: "1234", role: "admin" },
-    emmanuella: { password: "1234", message: "You always make my day." },
-    peace: { password: "1234", apology: true }
+
+let accounts = JSON.parse(localStorage.getItem("accounts")) || {
+  admin: { password: "admin123", role: "admin" },
+  emmanuella: { password: "1234", message: "You always make my day." },
+  peace: { password: "1234", apology: true }
 };
 
-function login() {
-    let user = document.getElementById("username").value.toLowerCase();
-    let pass = document.getElementById("password").value;
-    let result = document.getElementById("result");
+function saveAccounts(){
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+}
 
-    result.style.opacity = 0;
+function login(){
+  let user = document.getElementById("username").value.toLowerCase().trim();
+  let pass = document.getElementById("password").value.trim();
+  let result = document.getElementById("result");
 
-    if (!accounts[user]) {
-        result.innerHTML = "Username not found.";
-        result.style.opacity = 1;
-        return;
-    }
+  if(!accounts[user]){
+    result.innerHTML = "User not found.";
+    return;
+  }
 
-    if (accounts[user].password !== pass) {
-        result.innerHTML = "Incorrect password.";
-        result.style.opacity = 1;
-        return;
-    }
+  if(accounts[user].password !== pass){
+    result.innerHTML = "Wrong password.";
+    return;
+  }
 
-    if (accounts[user].role === "admin") {
-        result.innerHTML = "Admin access granted.";
-        result.style.opacity = 1;
-        return;
-    }
+  // ADMIN
+  if(accounts[user].role === "admin"){
+    showAdminPanel();
+    return;
+  }
 
-    if (accounts[user].apology) {
-        result.innerHTML = `
-        <div class="letter">
-        <strong>A Letter</strong><br><br>
-        I want to sincerely apologise for making you feel insecure or uncomfortable.<br><br>
-        That was never my intention.<br><br>
-        You deserve to feel respected, valued, and safe.<br><br>
-        I understand if you need space, but I truly am sorry.
-        <div class="signature">
-        — From me
-        </div>
-        </div>
-        `;
-        setTimeout(() => { result.style.opacity = 1; }, 100);
-        return;
-    }
+  // APOLOGY MODE
+  if(accounts[user].apology){
+    result.innerHTML = `
+      <div style="text-align:left; line-height:1.6;">
+      <h3>A Message</h3>
+      I want to sincerely apologise for making you feel insecure or uncomfortable.<br><br>
+      That was never my intention.<br><br>
+      You deserve to feel respected and safe.<br><br>
+      I understand if you need space, but I truly am sorry.
+      </div>
+    `;
+    return;
+  }
 
-    result.innerHTML = accounts[user].message;
-    setTimeout(() => { result.style.opacity = 1; }, 100);
+  // NORMAL MESSAGE
+  result.innerHTML = accounts[user].message;
+}
+
+function showAdminPanel(){
+  let result = document.getElementById("result");
+
+  result.innerHTML = `
+  <div class="admin-panel">
+    <h3>Admin Panel</h3>
+
+    <input id="newUser" placeholder="Username">
+    <input id="newPass" placeholder="Password">
+    <textarea id="newMessage" placeholder="Message"></textarea>
+    <label>
+      <input type="checkbox" id="apologyMode"> Apology Mode
+    </label>
+    <button onclick="addAccount()">Add / Update Account</button>
+
+    <hr>
+
+    <input id="deleteUser" placeholder="Username to delete">
+    <button onclick="deleteAccount()">Delete Account</button>
+  </div>
+  `;
+}
+
+function addAccount(){
+  let u = document.getElementById("newUser").value.toLowerCase().trim();
+  let p = document.getElementById("newPass").value.trim();
+  let m = document.getElementById("newMessage").value.trim();
+  let apology = document.getElementById("apologyMode").checked;
+
+  if(!u || !p){
+    alert("Username and password required.");
+    return;
+  }
+
+  accounts[u] = { password:p };
+
+  if(apology){
+    accounts[u].apology = true;
+  } else {
+    accounts[u].message = m || "No message set.";
+  }
+
+  saveAccounts();
+  alert("Account saved!");
+}
+
+function deleteAccount(){
+  let u = document.getElementById("deleteUser").value.toLowerCase().trim();
+
+  if(u === "admin"){
+    alert("Cannot delete admin.");
+    return;
+  }
+
+  if(accounts[u]){
+    delete accounts[u];
+    saveAccounts();
+    alert("Account deleted.");
+  } else {
+    alert("User not found.");
+  }
 }
 
 </script>
