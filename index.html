@@ -130,9 +130,12 @@ return;
 
 failedAttempts=0;
 
-if(accounts[user].admin){
-openAdmin();
-return;
+if (accounts[user].password === pass) {
+    if (accounts[user].role === "admin") {
+        openAdmin();
+    } else {
+        openAccount(user);
+    }
 }
 
 output.innerHTML="✅ ACCESS GRANTED<br>"+accounts[user].message;
@@ -244,6 +247,7 @@ setInterval(draw,33);
 
 </body>
 </html>
+
 
 
 
