@@ -85,8 +85,13 @@ animation:glitch 0.2s infinite;
 <script>
 
 // Accounts
-let accounts = JSON.parse(localStorage.getItem("accounts")) || {
-admin:{password:"admin123",admin:true}
+let saved = JSON.parse(localStorage.getItem("accounts"));
+
+let accounts = saved || {
+  admin: {
+    password: "PUT_YOUR_ORIGINAL_PASSWORD_HERE",
+    admin: true
+  }
 };
 let failedAttempts=0;
 
@@ -239,5 +244,6 @@ setInterval(draw,33);
 
 </body>
 </html>
+
 
 
