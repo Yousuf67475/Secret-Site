@@ -130,13 +130,16 @@ return;
 
 failedAttempts=0;
 
-if (accounts[user].password === pass) {
-    if (accounts[user].role === "admin") {
-        openAdmin();
-    } else {
-        openAccount(user);
-    }
-}
+let accounts = JSON.parse(localStorage.getItem("accounts")) || {
+  admin: {
+    password: "yourpassword",
+    role: "admin"
+  },
+  emmanuella: {
+    password: "emmanuella123",
+    message: "you always make my day"
+  }
+};
 
 output.innerHTML="✅ ACCESS GRANTED<br>"+accounts[user].message;
 
@@ -247,6 +250,7 @@ setInterval(draw,33);
 
 </body>
 </html>
+
 
 
 
