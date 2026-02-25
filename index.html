@@ -1,264 +1,129 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CYBER ACCESS PORTAL</title>
-
+<title>Private Message</title>
 <style>
-body{
-margin:0;
-background:black;
-color:#00ffcc;
-font-family:monospace;
-overflow:hidden;
-text-align:center;
+body {
+    margin: 0;
+    background: #f2f4f7;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-canvas{
-position:fixed;
-top:0;
-left:0;
-z-index:-1;
+.container {
+    background: white;
+    width: 360px;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    text-align: center;
 }
 
-.container{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:rgba(0,0,0,0.8);
-padding:30px;
-border:2px solid #00ffcc;
-box-shadow:0 0 30px #00ffcc;
-width:350px;
+h2 {
+    margin-bottom: 20px;
+    color: #333;
 }
 
-input{
-width:90%;
-padding:10px;
-margin:10px 0;
-background:black;
-border:1px solid #00ffcc;
-color:#00ffcc;
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
 }
 
-button{
-padding:10px 20px;
-background:#00ffcc;
-border:none;
-cursor:pointer;
-margin-top:10px;
+button {
+    padding: 10px 20px;
+    margin-top: 12px;
+    background: #4a90e2;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
 }
 
-button:hover{
-background:#00ffaa;
+button:hover {
+    background: #357bd8;
 }
 
-@keyframes glitch{
-0%{transform:translate(5px,-5px);}
-25%{transform:translate(-5px,5px);}
-50%{transform:translate(5px,5px);}
-75%{transform:translate(-5px,-5px);}
-100%{transform:translate(0);}
-}
-
-.self-destruct{
-color:red;
-font-size:24px;
-animation:glitch 0.2s infinite;
+#result {
+    margin-top: 20px;
+    font-size: 15px;
+    color: #444;
+    line-height: 1.6;
 }
 </style>
 </head>
-
 <body>
 
-<canvas id="matrix"></canvas>
-
-<div class="container" id="loginBox">
-<h2>CYBER ACCESS PORTAL</h2>
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-<br>
-<button onclick="login()">LOGIN</button>
-<div id="output"></div>
+<div class="container">
+    <h2>Private Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <div id="result"></div>
 </div>
 
 <script>
 
-// Accounts
-let saved = JSON.parse(localStorage.getItem("accounts"));
-
-let accounts = saved || {
-  admin: {
-    password: "admingod2015",
-    admin: true
-  }
-};
-let failedAttempts=0;
-
-function save(){
-localStorage.setItem("accounts",JSON.stringify(accounts));
-}
-
-function login(){
-
-let user=document.getElementById("username").value.toLowerCase();
-let pass=document.getElementById("password").value;
-let output=document.getElementById("output");
-
-output.innerHTML="🔎 SCANNING...";
-output.style.color="#00ffcc";
-
-setTimeout(()=>{
-
-if(!accounts[user] || accounts[user].password!==pass){
-
-failedAttempts++;
-output.innerHTML="🚫 ACCESS DENIED";
-output.style.color="red";
-document.body.style.animation="glitch 0.2s 5";
-
-setTimeout(()=>{
-document.body.style.animation="";
-},500);
-
-if(failedAttempts>=3){
-selfDestruct();
-}
-
-return;
-}
-
-failedAttempts=0;
-
-let accounts = JSON.parse(localStorage.getItem("accounts")) || {
-  admin: {
-    password: "admingod2015",
-    role: "admin"
-  },
-  emmanuella: {
-    password: "emmanuella123",
-    message: "you always make my day"
-  },
-  lylas: {
-    password: "lyla321",
-    apology: true,
-    message: "I am so sorry for making you feel insecure and uncomfortable. Do you forgive me."
-  }
+let accounts = {
+    admin: {
+        password: "youradminpassword",
+        role: "admin"
+    },
+    emmanuella: {
+        password: "emmanuella123",
+        message: "You always make my day."
+    },
+    peace: {
+        password: "peace123",
+        apology: true
+    }
 };
 
-output.innerHTML="✅ ACCESS GRANTED<br>"+accounts[user].message;
+function login() {
+    let user = document.getElementById("username").value.toLowerCase();
+    let pass = document.getElementById("password").value;
+    let result = document.getElementById("result");
 
-},1500);
+    if (!accounts[user]) {
+        result.innerHTML = "Username not found.";
+        return;
+    }
 
+    if (accounts[user].password !== pass) {
+        result.innerHTML = "Incorrect password.";
+        return;
+    }
+
+    // Admin login
+    if (accounts[user].role === "admin") {
+        result.innerHTML = "Admin access granted.";
+        return;
+    }
+
+    // Apology mode
+    if (accounts[user].apology) {
+        result.innerHTML = `
+        <strong>A Message From Me</strong><br><br>
+        I want to sincerely apologise for making you feel insecure or uncomfortable.<br><br>
+        That was never my intention.<br><br>
+        You deserve to feel respected, valued, and safe.<br><br>
+        I truly am sorry.
+        `;
+        return;
+    }
+
+    // Normal message
+    result.innerHTML = accounts[user].message;
 }
-
-function selfDestruct(){
-
-let box=document.getElementById("loginBox");
-
-box.innerHTML="<div class='self-destruct'>⚠ SYSTEM BREACH DETECTED ⚠<br>SELF DESTRUCT INITIATED</div>";
-
-setTimeout(()=>{
-document.body.innerHTML="<h1 style='color:red;'>💀 SYSTEM DESTROYED 💀</h1>";
-},3000);
-
-}
-
-function openAdmin(){
-document.getElementById("loginBox").innerHTML=`
-<h2>ADMIN MODE</h2>
-<button onclick="exportAccounts()">💾 Export Backup</button>
-<button onclick="importAccounts()">📂 Import Backup</button>
-<button onclick="location.reload()">Exit</button>
-`;
-}
-function exportAccounts(){
-
-let data=JSON.stringify(accounts,null,2);
-
-let blob=new Blob([data],{type:"application/json"});
-let url=URL.createObjectURL(blob);
-
-let a=document.createElement("a");
-a.href=url;
-a.download="accounts_backup.json";
-a.click();
-
-URL.revokeObjectURL(url);
-
-alert("Backup downloaded!");
-}
-
-function importAccounts(){
-
-let input=document.createElement("input");
-input.type="file";
-input.accept=".json";
-
-input.onchange=function(e){
-let file=e.target.files[0];
-let reader=new FileReader();
-
-reader.onload=function(){
-try{
-accounts=JSON.parse(reader.result);
-save();
-alert("Backup restored!");
-location.reload();
-}catch{
-alert("Invalid backup file!");
-}
-};
-
-reader.readAsText(file);
-};
-
-input.click();
-}
-// MATRIX RAIN
-let canvas=document.getElementById("matrix");
-let ctx=canvas.getContext("2d");
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-let letters="01CYBERACCESS".split("");
-let fontSize=14;
-let columns=canvas.width/fontSize;
-let drops=[];
-
-for(let i=0;i<columns;i++){
-drops[i]=1;
-}
-
-function draw(){
-ctx.fillStyle="rgba(0,0,0,0.05)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-ctx.fillStyle="#00ff00";
-ctx.font=fontSize+"px monospace";
-
-for(let i=0;i<drops.length;i++){
-let text=letters[Math.floor(Math.random()*letters.length)];
-ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-
-if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
-drops[i]=0;
-
-drops[i]++;
-}
-}
-
-setInterval(draw,33);
 
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
