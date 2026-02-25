@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Private Message</title>
+<title>Private Letter</title>
 <style>
 body {
     margin: 0;
-    background: #f2f4f7;
-    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    font-family: Georgia, serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,20 +15,21 @@ body {
 
 .container {
     background: white;
-    width: 360px;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    width: 380px;
+    padding: 35px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     text-align: center;
+    transition: all 0.4s ease;
 }
 
 h2 {
     margin-bottom: 20px;
-    color: #333;
+    color: #444;
 }
 
 input {
-    width: 90%;
+    width: 92%;
     padding: 10px;
     margin: 8px 0;
     border: 1px solid #ddd;
@@ -39,23 +40,37 @@ input {
 button {
     padding: 10px 20px;
     margin-top: 12px;
-    background: #4a90e2;
+    background: #5b7db1;
     border: none;
     border-radius: 6px;
     color: white;
     font-size: 14px;
     cursor: pointer;
+    transition: background 0.3s;
 }
 
 button:hover {
-    background: #357bd8;
+    background: #46638f;
 }
 
 #result {
     margin-top: 20px;
     font-size: 15px;
-    color: #444;
-    line-height: 1.6;
+    color: #333;
+    line-height: 1.7;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.letter {
+    text-align: left;
+    font-size: 16px;
+}
+
+.signature {
+    margin-top: 20px;
+    font-style: italic;
+    color: #666;
 }
 </style>
 </head>
@@ -65,13 +80,11 @@ button:hover {
     <h2>Private Login</h2>
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+    <button onclick="login()">Open</button>
     <div id="result"></div>
 </div>
 
 <script>
-
-
 let accounts = {
     admin: { password: "1234", role: "admin" },
     emmanuella: { password: "1234", message: "You always make my day." },
@@ -83,41 +96,48 @@ function login() {
     let pass = document.getElementById("password").value;
     let result = document.getElementById("result");
 
+    result.style.opacity = 0;
+
     if (!accounts[user]) {
         result.innerHTML = "Username not found.";
+        result.style.opacity = 1;
         return;
     }
 
     if (accounts[user].password !== pass) {
         result.innerHTML = "Incorrect password.";
+        result.style.opacity = 1;
         return;
     }
 
-    // Admin login
     if (accounts[user].role === "admin") {
         result.innerHTML = "Admin access granted.";
+        result.style.opacity = 1;
         return;
     }
 
-    // Apology mode
     if (accounts[user].apology) {
         result.innerHTML = `
-        <strong>A Message From Me</strong><br><br>
+        <div class="letter">
+        <strong>A Letter</strong><br><br>
         I want to sincerely apologise for making you feel insecure or uncomfortable.<br><br>
         That was never my intention.<br><br>
         You deserve to feel respected, valued, and safe.<br><br>
-        I truly am sorry.
+        I understand if you need space, but I truly am sorry.
+        <div class="signature">
+        — From me
+        </div>
+        </div>
         `;
+        setTimeout(() => { result.style.opacity = 1; }, 100);
         return;
     }
 
-    // Normal message
     result.innerHTML = accounts[user].message;
+    setTimeout(() => { result.style.opacity = 1; }, 100);
 }
 
 </script>
 
 </body>
 </html>
-
-
